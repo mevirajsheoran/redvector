@@ -1,53 +1,57 @@
-# ThreatForge - Docker Compose Configuration
-# ==========================================
-# Provides containerized services for the ThreatForge lab environment
+version: '3.8'
+
+# ThreatForge Test Lab - Isolated vulnerable targets
+# ETHICAL: These are intentionally vulnerable applications
+# for security testing and education ONLY.
 
 services:
-  # ThreatForge backend API
-  backend:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.backend
-    container_name: threatforge-backend
-    ports:
-      - "9000:9000"
+
+  # ── Target 1: DVWA (Web Application Vulnerabilities) ──
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: tf_dvwa
+    networks:
+      threatnet:
+        ipv4_address: 172.25.0.10
     environment:
-      - ENVIRONMENT=development
-      - LOG_LEVEL=INFO
-    volumes:
-      - ./threatforge:/app/threatforge
-      - ./reports:/app/reports
-    networks:
-      - threatforge-net
+      - MYSQL_ROOT_PASSWORD=dvwa
+      - MYSQL_DATABASE=dvwa
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=dvwa
     restart: unless-stopped
 
-  # Nginx target for testing
-  nginx-target:
+  # ── Target 2: WebGoat (OWASP Training App) ──
+  webgoat:
+    image: webgoat/webgoat:latest
+    container_name: tf_webgoat
+    networks:
+      threatnet:
+        ipv4_address: 172.25.0.11
+    restart: unless-stopped
+
+  # ── Target 3: Simple Nginx (DoS target) ──
+  nginx:
     image: nginx:alpine
-    container_name: threatforge-nginx-target
-    ports:
-      - "8080:80"
-    volumes:
-      - ./lab/nginx/html:/usr/share/nginx/html:ro
+    container_name: tf_nginx
     networks:
-      - threatforge-net
+      threatnet:
+        ipv4_address: 172.25.0.12
     restart: unless-stopped
 
-  # Redis for caching and state management
-  redis:
-    image: redis:7-alpine
-    container_name: threatforge-redis
-    ports:
-      - "6380:6379"
-    volumes:
-      - redis-data:/data
+  # ── Target 4: Simple Python HTTP server ──
+  http_target:
+    image: python:3.11-slim
+    container_name: tf_http
     networks:
-      - threatforge-net
+      threatnet:
+        ipv4_address: 172.25.0.13
+    command: python -m http.server 8080
+    working_dir: /tmp
     restart: unless-stopped
 
 networks:
-  threatforge-net:
+  threatnet:
     driver: bridge
-
-volumes:
-  redis-data:
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
