@@ -1,0 +1,37 @@
+[project]
+name = "threatforge"
+version = "0.1.0"
+description = "Offensive Security Testing Framework for Educational Use"
+authors = [{name = "Viraj Sheoran", email = "mevirajsheoran@gmail.com"}]
+requires-python = ">=3.11"
+license = {text = "MIT"}
+readme = "README.md"
+keywords = ["security", "education", "penetration-testing", "red-team", "cybersecurity"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/mevirajsheoran/redvector"
+Repository = "https://github.com/mevirajsheoran/redvector.git"
+Issues = "https://github.com/mevirajsheoran/redvector/issues"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "W", "I", "B", "C4", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
