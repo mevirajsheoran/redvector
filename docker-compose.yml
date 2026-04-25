@@ -1,0 +1,53 @@
+# ThreatForge - Docker Compose Configuration
+# ==========================================
+# Provides containerized services for the ThreatForge lab environment
+
+services:
+  # ThreatForge backend API
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: threatforge-backend
+    ports:
+      - "9000:9000"
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./threatforge:/app/threatforge
+      - ./reports:/app/reports
+    networks:
+      - threatforge-net
+    restart: unless-stopped
+
+  # Nginx target for testing
+  nginx-target:
+    image: nginx:alpine
+    container_name: threatforge-nginx-target
+    ports:
+      - "8080:80"
+    volumes:
+      - ./lab/nginx/html:/usr/share/nginx/html:ro
+    networks:
+      - threatforge-net
+    restart: unless-stopped
+
+  # Redis for caching and state management
+  redis:
+    image: redis:7-alpine
+    container_name: threatforge-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - threatforge-net
+    restart: unless-stopped
+
+networks:
+  threatforge-net:
+    driver: bridge
+
+volumes:
+  redis-data:
