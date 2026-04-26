@@ -77,3 +77,9 @@ async def ethics():
         ],
         "full_statement": "See ETHICS.md in project root"
     }
+
+from threatforge.api.recon import router as recon_router
+app.include_router(recon_router)
+
+from threatforge.api.dos import router as dos_router
+app.include_router(dos_router)
