@@ -83,3 +83,9 @@ app.include_router(recon_router)
 
 from threatforge.api.dos import router as dos_router
 app.include_router(dos_router)
+
+from threatforge.api.validation import router as validation_router
+app.include_router(validation_router)
+
+from threatforge.api.websocket import router as ws_router
+app.include_router(ws_router)
