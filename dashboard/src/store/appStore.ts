@@ -1,75 +1,60 @@
-/**
- * src/store/appStore.ts
- * Global application state using Zustand
- */
-
 import { create } from 'zustand'
 
-interface AppState {
-  // Current module being demonstrated
-  activeModule: 'crypto' | 'recon' | 'dos' | 'validation' | 'home'
-  setActiveModule: (module: AppState['activeModule']) => void
+export type LogType = 'info' | 'success' | 'error' | 'attack' | 'system' | 'warning' | 'validation'
 
-  // Attack running state
-  isAttackRunning: boolean
-  currentAttack: string | null
-  setAttackRunning: (running: boolean, attackName?: string) => void
-
-  // Latest results
-  lastResult: Record<string, any> | null
-  setLastResult: (result: Record<string, any>) => void
-
-  // Sentinel status
-  sentinelOnline: boolean
-  setSentinelOnline: (online: boolean) => void
-
-  // Validation results
-  validationResults: Record<string, any>[]
-  addValidationResult: (result: Record<string, any>) => void
-  clearValidation: () => void
-
-  // Terminal output lines
-  terminalLines: string[]
-  addTerminalLine: (line: string) => void
-  clearTerminal: () => void
+export interface LogLine {
+  id:      number
+  time:    string
+  source:  string
+  message: string
+  type:    LogType
 }
 
-export const useAppStore = create<AppState>((set) => ({
-  activeModule: 'home',
-  setActiveModule: (module) => set({ activeModule: module }),
+let lineId = 0
 
-  isAttackRunning: false,
-  currentAttack: null,
-  setAttackRunning: (running, attackName) => set({
-    isAttackRunning: running,
-    currentAttack: running ? (attackName || null) : null
-  }),
+interface Store {
+  lines:       LogLine[]
+  addLine:     (source: string, message: string, type?: LogType) => void
+  clearLines:  () => void
 
-  lastResult: null,
-  setLastResult: (result) => set({ lastResult: result }),
+  result:      any
+  setResult:   (r: any) => void
 
-  sentinelOnline: false,
-  setSentinelOnline: (online) => set({ sentinelOnline: online }),
+  running:     boolean
+  runLabel:    string
+  setRunning:  (v: boolean, label?: string) => void
 
-  validationResults: [],
-  addValidationResult: (result) => set(state => ({
-    validationResults: [...state.validationResults, result]
-  })),
-  clearValidation: () => set({ validationResults: [] }),
+  sentinelUp:  boolean
+  setSentinel: (v: boolean) => void
 
-  terminalLines: [
-    '╔══════════════════════════════════════════════════════════╗',
-    '║       THREATFORGE v0.1.0  - Security Testing Platform    ║',
-    '║       Academic Project - INS Lab TE7947                  ║',
-    '║       ETHICAL USE ONLY - Authorized testing environments ║',
-    '╚══════════════════════════════════════════════════════════╝',
-    '',
-    '[SYS] System initialized. All modules loaded.',
-    '[SYS] Type or click buttons to begin testing.',
-    ''
-  ],
-  addTerminalLine: (line) => set(state => ({
-    terminalLines: [...state.terminalLines.slice(-200), line]
-  })),
-  clearTerminal: () => set({ terminalLines: [] })
+  validations: any[]
+  addVal:      (v: any) => void
+}
+
+export const useStore = create<Store>((set) => ({
+  lines: [],
+  addLine: (source, message, type = 'info') =>
+    set(s => ({
+      lines: [...s.lines.slice(-400), {
+        id: lineId++,
+        time: new Date().toLocaleTimeString('en-US', { hour12: false }),
+        source: source.toUpperCase().slice(0, 8),
+        message,
+        type,
+      }]
+    })),
+  clearLines: () => set({ lines: [] }),
+
+  result: null,
+  setResult: (r) => set({ result: r }),
+
+  running: false,
+  runLabel: '',
+  setRunning: (v, label = '') => set({ running: v, runLabel: label }),
+
+  sentinelUp: false,
+  setSentinel: (v) => set({ sentinelUp: v }),
+
+  validations: [],
+  addVal: (v) => set(s => ({ validations: [...s.validations.slice(-20), v] })),
 }))

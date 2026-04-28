@@ -1,79 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Orbitron:wght@400;600;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base terminal styling */
-* {
-  box-sizing: border-box;
-}
-
+/* ─── reset ─── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 body {
-  background-color: #0d1117;
-  color: #c9d1d9;
+  background: #050a0e;
+  color: #b8c5d6;
   font-family: 'JetBrains Mono', monospace;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+  font-size: 12px;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ─── selection ─── */
+::selection { background: rgba(0,255,65,0.25); color: #00ff41; }
+
+/* ─── scrollbar ─── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #0a1018; }
+::-webkit-scrollbar-thumb { background: #1a2744; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
+
+/* ─── CRT overlay ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,255,65,0.012) 2px, rgba(0,255,65,0.012) 4px
+  );
 }
-::-webkit-scrollbar-track {
-  background: #161b22;
+
+/* ─── cyber grid ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.018) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
-::-webkit-scrollbar-thumb {
-  background: #30363d;
+
+/* ─── glow text ─── */
+.glow-green  { color:#00ff41; text-shadow: 0 0 6px #00ff41, 0 0 18px rgba(0,255,65,0.35); }
+.glow-red    { color:#ff073a; text-shadow: 0 0 6px #ff073a, 0 0 18px rgba(255,7,58,0.35); }
+.glow-cyan   { color:#00d4ff; text-shadow: 0 0 6px #00d4ff, 0 0 18px rgba(0,212,255,0.35); }
+.glow-yellow { color:#ffb800; text-shadow: 0 0 6px #ffb800, 0 0 18px rgba(255,184,0,0.35); }
+.glow-purple { color:#bf5af2; text-shadow: 0 0 6px #bf5af2, 0 0 18px rgba(191,90,242,0.35); }
+
+/* ─── panels ─── */
+.panel {
+  background: linear-gradient(180deg, #0d1520 0%, #0a1018 100%);
+  border: 1px solid #1a2744;
   border-radius: 3px;
+  position: relative;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #58a6ff;
-}
-
-/* Terminal cursor blink */
-.cursor::after {
-  content: '█';
-  animation: blink 1s step-end infinite;
-  color: #39d353;
+.panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
 }
 
-/* Glow effects */
-.glow-green {
-  text-shadow: 0 0 10px #39d353;
+/* ─── neon borders ─── */
+.nb-green  { border: 1px solid rgba(0,255,65,0.35);  box-shadow: 0 0 8px rgba(0,255,65,0.12),  inset 0 0 8px rgba(0,255,65,0.06); }
+.nb-red    { border: 1px solid rgba(255,7,58,0.35);  box-shadow: 0 0 8px rgba(255,7,58,0.12),  inset 0 0 8px rgba(255,7,58,0.06); }
+.nb-cyan   { border: 1px solid rgba(0,212,255,0.35); box-shadow: 0 0 8px rgba(0,212,255,0.12), inset 0 0 8px rgba(0,212,255,0.06); }
+.nb-purple { border: 1px solid rgba(191,90,242,0.35);box-shadow: 0 0 8px rgba(191,90,242,0.12),inset 0 0 8px rgba(191,90,242,0.06); }
+
+/* ─── status dot ─── */
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%; display: inline-block; flex-shrink: 0;
 }
-.glow-red {
-  text-shadow: 0 0 10px #f85149;
+.dot-green  { background:#00ff41; box-shadow: 0 0 6px #00ff41; animation: glow 2s ease-in-out infinite; }
+.dot-red    { background:#ff073a; box-shadow: 0 0 6px #ff073a; }
+.dot-yellow { background:#ffb800; box-shadow: 0 0 6px #ffb800; animation: blink 1.2s step-end infinite; }
+
+/* ─── progress ─── */
+.prog-wrap { height: 5px; background:#0a1018; border:1px solid #1a2744; border-radius:2px; overflow:hidden; }
+.prog-bar  { height:100%; border-radius:2px; transition: width 0.5s ease; }
+
+/* ─── cursor ─── */
+.cursor::after { content:'█'; color:#00ff41; animation: blink 1s step-end infinite; }
+
+/* ─── command button ─── */
+.cmd-btn {
+  position: relative; overflow: hidden;
+  transition: background 0.2s;
 }
-.glow-blue {
-  text-shadow: 0 0 10px #58a6ff;
+.cmd-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0,255,65,0.06), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.cmd-btn:hover::after { transform: translateX(100%); }
+.cmd-btn:hover { background: rgba(0,255,65,0.04); }
+
+/* ─── stream bg for active attacks ─── */
+.streaming {
+  background-image: repeating-linear-gradient(
+    0deg, rgba(0,255,65,0.015), rgba(0,255,65,0.015) 1px,
+    transparent 1px, transparent 30px
+  );
+  background-size: 100% 30px;
+  animation: stream 1.5s linear infinite;
 }
 
-/* Panel borders */
-.terminal-panel {
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+/* ─── badge ─── */
+.badge {
+  display:inline-flex; align-items:center;
+  padding: 0 4px; border-radius: 2px; border:1px solid;
+  font-size: 0.5rem; font-weight:700; letter-spacing:0.04em;
 }
-
-/* Status indicators */
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.status-dot.online {
-  background: #39d353;
-  box-shadow: 0 0 6px #39d353;
-  animation: pulse-green 2s ease-in-out infinite;
-}
-.status-dot.offline {
-  background: #f85149;
-}
-.status-dot.pending {
-  background: #d29922;
-  animation: blink 1s step-end infinite;
-}
+.badge-green  { color:#00ff41; border-color:rgba(0,255,65,0.4);  background:rgba(0,255,65,0.08); }
+.badge-red    { color:#ff073a; border-color:rgba(255,7,58,0.4);  background:rgba(255,7,58,0.08); }
+.badge-cyan   { color:#00d4ff; border-color:rgba(0,212,255,0.4); background:rgba(0,212,255,0.08); }
+.badge-yellow { color:#ffb800; border-color:rgba(255,184,0,0.4); background:rgba(255,184,0,0.08); }
+.badge-purple { color:#bf5af2; border-color:rgba(191,90,242,0.4);background:rgba(191,90,242,0.08); }
+.badge-muted  { color:#5a6f8a; border-color:rgba(90,111,138,0.4);background:rgba(90,111,138,0.08); }

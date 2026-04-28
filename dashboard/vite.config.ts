@@ -6,16 +6,8 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Proxy all /api/* requests to FastAPI backend
-      '/api': {
-        target: 'http://localhost:9000',
-        changeOrigin: true
-      },
-      // Proxy WebSocket connection
-      '/ws': {
-        target: 'ws://localhost:9000',
-        ws: true
-      }
-    }
-  }
+      '/api': { target: 'http://localhost:9000', changeOrigin: true },
+      '/ws':  { target: 'ws://localhost:9000', ws: true },
+    },
+  },
 })
