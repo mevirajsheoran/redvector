@@ -1,52 +1,41 @@
 version: '3.8'
 
-# ThreatForge Test Lab - Isolated vulnerable targets
-# ETHICAL: These are intentionally vulnerable applications
-# for security testing and education ONLY.
-
 services:
 
-  # ── Target 1: DVWA (Web Application Vulnerabilities) ──
-  dvwa:
-    image: vulnerables/web-dvwa:latest
-    container_name: tf_dvwa
+  # Target 1: Simple HTTP server (GUARANTEED to work)
+  # This is the main target for DoS demos
+  http_target:
+    image: python:3.11-slim
+    container_name: tf_http
+    command: python -m http.server 80
+    working_dir: /tmp
     networks:
       threatnet:
-        ipv4_address: 172.25.0.10
-    environment:
-      - MYSQL_ROOT_PASSWORD=dvwa
-      - MYSQL_DATABASE=dvwa
-      - MYSQL_USER=dvwa
-      - MYSQL_PASSWORD=dvwa
+        ipv4_address: 172.25.0.13
+    ports:
+      - "8081:80"    # Access from Windows at localhost:8081
     restart: unless-stopped
 
-  # ── Target 2: WebGoat (OWASP Training App) ──
-  webgoat:
-    image: webgoat/webgoat:latest
-    container_name: tf_webgoat
-    networks:
-      threatnet:
-        ipv4_address: 172.25.0.11
-    restart: unless-stopped
-
-  # ── Target 3: Simple Nginx (DoS target) ──
+  # Target 2: nginx (simple web server)
   nginx:
     image: nginx:alpine
     container_name: tf_nginx
     networks:
       threatnet:
         ipv4_address: 172.25.0.12
+    ports:
+      - "8082:80"    # Access from Windows at localhost:8082
     restart: unless-stopped
 
-  # ── Target 4: Simple Python HTTP server ──
-  http_target:
-    image: python:3.11-slim
-    container_name: tf_http
+  # Target 3: DVWA
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: tf_dvwa
     networks:
       threatnet:
-        ipv4_address: 172.25.0.13
-    command: python -m http.server 8080
-    working_dir: /tmp
+        ipv4_address: 172.25.0.10
+    ports:
+      - "8083:80"    # Access from Windows at localhost:8083
     restart: unless-stopped
 
 networks:
