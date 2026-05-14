@@ -107,8 +107,8 @@ Optional tools:
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/mevirajsheoran/redvector.git
-cd redvector
+git clone https://github.com/mevirajsheoran/threatforge.git
+cd threatforge
 
 python -m venv venv
 source venv/bin/activate

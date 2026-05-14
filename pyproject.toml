@@ -17,9 +17,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mevirajsheoran/redvector"
-Repository = "https://github.com/mevirajsheoran/redvector"
-Issues = "https://github.com/mevirajsheoran/redvector/issues"
+Homepage = "https://github.com/mevirajsheoran/threatforge"
+Repository = "https://github.com/mevirajsheoran/threatforge"
+Issues = "https://github.com/mevirajsheoran/threatforge/issues"
 
 [tool.ruff]
 line-length = 100
