@@ -2,65 +2,50 @@
 
 ## Project Purpose
 
-ThreatForge is an **academic security testing framework** developed as part 
-of the Information and Network Security course. Its purpose is:
+ThreatForge is an academic and research-oriented security testing framework. Its intended use is:
 
-1. **Educational**: Demonstrate how attacks function so defenders can build 
-   better defenses
-2. **Validation**: Test defensive systems (IDS, WAFs, firewalls) under 
-   controlled conditions
-3. **Research**: Provide reproducible attack patterns for security research
+1. Education: help students and defenders understand how attack workflows behave.
+2. Validation: test whether a defensive system detects or blocks suspicious behavior.
+3. Research: produce reproducible local attack traffic for measurement and comparison.
 
 ## Authorized Use Only
 
-This framework MUST ONLY be used against:
+Use ThreatForge only against:
 
-✅ **Allowed Targets**:
 - Systems you personally own
-- Isolated Docker/VM lab environments  
-- Systems with written authorization for testing
-- Intentionally vulnerable training apps (DVWA, WebGoat, Metasploitable)
+- Isolated Docker or VM lab environments
+- Systems you have explicit written authorization to test
+- Intentionally vulnerable training applications
 
-❌ **PROHIBITED**:
+Do not use ThreatForge against:
+
 - Production systems without authorization
-- Third-party websites or services
+- Third-party services
 - Public infrastructure
-- Any system where you lack explicit permission
+- Any environment where you do not have explicit permission
 
-## Built-in Safeguards
+## Built-In Safeguards
 
-ThreatForge includes:
+ThreatForge is designed to encourage safer experimentation:
 
-1. **Target Whitelisting** (`utils/ethics.py`): Refuses to attack non-whitelisted IPs
-2. **Rate Limiting**: Maximum traffic rates capped to prevent real damage
-3. **Synthetic Payloads**: No real exploit code, only pattern generation
-4. **Audit Logging**: Every attack logged with timestamp and target
-5. **Lab Isolation**: Designed for Docker/VM environments only
+1. Target allow-listing is enforced in API routes for local lab use.
+2. Rate limits are used in simulation modules to reduce risk.
+3. The framework is oriented around synthetic demonstrations and validation workflows.
+4. The default setup is a local Docker lab, not an internet-facing target list.
 
 ## Legal Disclaimer
 
-The author and contributors assume **no liability** for misuse of this 
-framework. Users are solely responsible for ensuring their use complies 
-with all applicable laws including:
+The author and contributors provide this project as-is and assume no liability for misuse. You are responsible for ensuring your use complies with all applicable laws, policies, and authorization requirements.
 
-- Computer Fraud and Abuse Act (USA)
-- IT Act 2000 (India)
-- General Data Protection Regulation (EU)
-- Local cybersecurity legislation
-
-**By using ThreatForge, you agree to these terms.**
+By using ThreatForge, you agree to use it only in lawful, authorized, and controlled environments.
 
 ## Reporting Concerns
 
-If you discover misuse, security issues, or have concerns:
-- Email: [your.email@symbiosis.ac.in]
-- File a GitHub issue with [SECURITY] tag
+If you discover a safety concern or vulnerability:
+
+- Use the process described in [SECURITY.md](SECURITY.md) for sensitive reports.
+- Use GitHub issues only for non-sensitive questions or documentation improvements.
 
 ## Academic Context
 
-Submitted as part of **TE7947 - Information and Network Security Lab**  
-Symbiosis Institute of Technology  
-Academic Year 2025-2026
-
-This project is graded on offensive technique implementation, NOT on real-world 
-attack execution.
+ThreatForge originated as part of an Information and Network Security lab project and is now being prepared for open-source use. That academic origin does not change the requirement for authorized, lawful use.

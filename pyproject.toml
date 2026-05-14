@@ -1,7 +1,7 @@
 [project]
 name = "threatforge"
 version = "0.1.0"
-description = "Offensive Security Testing Framework for Educational Use"
+description = "Offensive security testing framework for authorized lab use and defense validation"
 authors = [{name = "Viraj Sheoran", email = "mevirajsheoran@gmail.com"}]
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -10,6 +10,7 @@ keywords = ["security", "education", "penetration-testing", "red-team", "cyberse
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Education",
+    "Intended Audience :: Information Technology",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Topic :: Security",
@@ -17,7 +18,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/mevirajsheoran/redvector"
-Repository = "https://github.com/mevirajsheoran/redvector.git"
+Repository = "https://github.com/mevirajsheoran/redvector"
 Issues = "https://github.com/mevirajsheoran/redvector/issues"
 
 [tool.ruff]

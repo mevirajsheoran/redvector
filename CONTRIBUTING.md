@@ -1,86 +1,99 @@
 # Contributing to ThreatForge
 
-Thank you for your interest in contributing to ThreatForge! This document provides guidelines for contributing to this educational security testing framework.
+Thanks for helping improve ThreatForge.
 
-## Code of Conduct
+This repository is open source, but it is also a security-focused project. Every contribution should improve the codebase without weakening the safety, clarity, or educational framing of the project.
 
-This project is for **educational and authorized security testing only**. All contributions must:
-- Be designed for defensive/educational purposes
-- Include proper safeguards and warnings
-- Never include real exploit code or malware
-- Include comprehensive documentation about safe usage
+## Ground Rules
 
-## How to Contribute
+Contributions should:
 
-### Reporting Bugs
-
-Use GitHub Issues with the bug report template:
-- Describe the bug clearly
-- Include reproduction steps
-- Specify environment details (Python version, OS)
-- Include relevant logs or screenshots
-
-### Suggesting Features
-
-Use GitHub Issues with the feature request template:
-- Describe the feature and its educational value
-- Explain how it helps defensive security
-- Note any safety considerations
-
-### Pull Requests
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Make your changes with clear commit messages
-4. Add tests for new functionality
-5. Ensure all tests pass: `make check`
-6. Submit a pull request with detailed description
+- Support authorized testing, education, or defense validation
+- Preserve or improve built-in safeguards
+- Avoid adding malware, persistence tooling, or real-world exploit payloads
+- Include documentation and tests when behavior changes
 
 ## Development Setup
 
 ```bash
-# Clone your fork
-git clone https://github.com/your-username/redvector.git
+git clone https://github.com/mevirajsheoran/redvector.git
 cd redvector
 
-# Run setup script
-./scripts/setup.sh
-
-# Or manually:
 python -m venv venv
-source venv/bin/activate  # Windows: .\venv\Scripts\activate
+source venv/bin/activate
+
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
-## Coding Standards
+Frontend setup:
 
-- Follow PEP 8 style guidelines
-- Use type hints where appropriate
-- Add docstrings to all public functions and classes
-- Keep functions focused and under 50 lines when possible
-- Add comprehensive error handling
-- Include unit tests for new code
+```bash
+cd dashboard
+npm install
+```
 
-## Safety Requirements
+## Common Commands
 
-All attack simulation modules must include:
-- Rate limiting to prevent real damage
-- Target validation (whitelist/checks)
-- Clear warnings about authorized use only
-- Audit logging of all operations
-- Safe defaults (dry-run mode)
+Run these from the repository root:
 
-## Commit Message Format
+```bash
+make test
+make lint
+make format
+docker compose up -d
+```
 
-Use conventional commits:
-- `feat:` New feature
-- `fix:` Bug fix
-- `docs:` Documentation changes
-- `test:` Test additions/changes
-- `chore:` Maintenance tasks
-- `security:` Security-related changes
+If you are working on the API:
 
-## Questions?
+```bash
+uvicorn threatforge.main:app --reload --port 9000
+```
 
-Open a GitHub Discussion or contact the maintainers.
+If you are working on the dashboard:
+
+```bash
+cd dashboard
+npm run dev -- --host --port 5173
+```
+
+## Pull Requests
+
+1. Fork the repository.
+2. Create a topic branch.
+3. Make the smallest focused change that solves the problem.
+4. Add or update tests when behavior changes.
+5. Run the relevant checks before opening the PR.
+6. Explain the motivation, scope, and any safety implications in the PR description.
+
+## Commit Style
+
+Conventional commits are preferred:
+
+- `feat:` new functionality
+- `fix:` bug fixes
+- `docs:` documentation only
+- `test:` test changes
+- `chore:` maintenance
+- `security:` safety or security-related changes
+
+## Safety Review Expectations
+
+Changes touching attack execution, targeting logic, rate limits, or validation logic should include:
+
+- A clear explanation of intended use
+- Notes on how misuse risk was considered
+- Guardrails or defaults that keep behavior contained
+- Tests for any new validation or restriction logic
+
+## Reporting Bugs
+
+When opening an issue, include:
+
+- What you expected
+- What happened instead
+- Reproduction steps
+- Environment details
+- Logs, screenshots, or example inputs when useful
+
+For sensitive security reports, use the process in [SECURITY.md](SECURITY.md) instead of opening a public issue.
